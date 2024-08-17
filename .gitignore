@@ -1,0 +1,5 @@
+.env
+Tracked_Time/
+.idea
+__pycache__/
+tracker.log
