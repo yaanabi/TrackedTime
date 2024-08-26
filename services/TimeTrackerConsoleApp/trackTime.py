@@ -6,9 +6,10 @@ import os
 import datetime
 import json
 
-from utils import seconds_to_time, time_to_seconds, BASE_PATH
+import utils
 
-tracked_time_path = os.path.join(BASE_PATH, 'Tracked_Time')
+
+tracked_time_path = os.path.join(utils.BASE_PATH, 'TrackedTime')
 
 year_dir = os.path.join(tracked_time_path, str(datetime.datetime.now().year))
 
@@ -22,18 +23,14 @@ def clear():
     Clear console.
     :return: None
     """
+    _ = os.system('cls')
 
-    if os.name == 'nt':
-        _ = os.system('cls')
-    else:
-
-        _ = os.system('clear')
 
 
 def replace_app_time(app, data, timestamp):
     for item in data:
         if item['app'] == app:
-            item['time'] = seconds_to_time(time_to_seconds(item['time']) + int(time.time()) - timestamp[app])
+            item['time'] = utils.seconds_to_time(utils.time_to_seconds(item['time']) + int(time.time()) - timestamp[app])
 
 
 def is_app_in_data(app, data):
@@ -149,7 +146,7 @@ def time_tracker():
 
             clear()
 
-            json_apps_data = sorted(json_apps_data, key=lambda val: time_to_seconds(val['time']), reverse=True)
+            json_apps_data = sorted(json_apps_data, key=lambda val: utils.time_to_seconds(val['time']), reverse=True)
 
             for item in json_apps_data:
                 print('| %s: %-35s |' % (item['time'], item['app']))

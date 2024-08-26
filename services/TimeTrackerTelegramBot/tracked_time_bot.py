@@ -4,19 +4,27 @@ import telebot
 import json
 import os
 from collections import defaultdict
-import sys 
+
 
 # Import errors for exception handling
 from dropbox.exceptions import ApiError
 from dropbox.files import DownloadError
-
-# sys.path.append('C:\\Users\\nabiu\\Projects\\petprojects\\TimeTracker')
 
 from dropbox_utils import DropboxUtils
 from utils import seconds_to_time, time_to_seconds, BASE_PATH, get_bot_message
 
 from dotenv import load_dotenv
 import os
+
+import logging
+
+# Configure logger
+logging.basicConfig(filename='./tracker.log', encoding='utf-8', 
+                    format='[%(asctime)s] [%(filename)s:%(lineno)d] [%(levelname)s] - %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S', level=logging.DEBUG)
+
+# Create logger
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
@@ -31,10 +39,9 @@ class TelegramBot:
         self.register_handlers()
     
     def register_handlers(self):
-        self.bot.add_message_handler(self.send_day_data, commands=['day'])
-        self.bot.add_message_handler(self.send_month_data, commands=['month'])
-        self.bot.add_message_handler(self.send_today_data, commands=['today'])
-
+        self.bot.register_message_handler(self.send_day_data, commands=['day'])
+        self.bot.register_message_handler(self.send_month_data, commands=['month'])
+        self.bot.register_message_handler(self.send_today_data, commands=['today'])
 
     def send_day_data(self, message):
         """

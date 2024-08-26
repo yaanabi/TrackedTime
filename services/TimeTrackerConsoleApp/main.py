@@ -3,7 +3,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import logging
 import trackTime
 # import dropbox_utils
-from dropbox_utils import DropboxUtils
+import dropbox_utils
 
 from dotenv import load_dotenv
 import os
@@ -26,7 +26,7 @@ def close_handler():
     It uploads the current time tracking data to the Dropbox.
     """
     # Connect to Dropbox
-    dbx = DropboxUtils(DBX_TOKEN)
+    dbx = dropbox_utils.DropboxUtils(DBX_TOKEN)
 
     # Get the file path and name of the current time tracking data
     file_path = trackTime.get_file_path()

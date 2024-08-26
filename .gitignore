@@ -1,5 +1,5 @@
 .env
-Tracked_Time/
+TrackedTime/
 .idea
 __pycache__/
 tracker.log
