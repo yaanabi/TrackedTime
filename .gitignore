@@ -93,3 +93,6 @@ db.sqlite3
 TrackedTime/
 .idea
 tracker.log
+
+# Exclude
+!.env.template
