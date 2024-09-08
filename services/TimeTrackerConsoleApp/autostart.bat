@@ -1,4 +1,4 @@
 @echo off
-call C:\Users\nabiu\Work\TimeTracker\myvenv\Scripts\activate.bat
-python C:\Users\nabiu\Work\TimeTracker\services\TimeTrackerConsoleApp\main.py || pause
-call C:\Users\nabiu\Work\TimeTracker\myvenv\Scripts\deactivate.bat
+call path\to\project\myvenv\Scripts\activate.bat
+python path\to\project\services\TimeTrackerConsoleApp\main.py || pause
+call path\to\project\myvenv\Scripts\deactivate.bat
