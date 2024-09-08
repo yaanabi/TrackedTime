@@ -146,7 +146,8 @@ def time_tracker():
 
     # Clear console
     clear()
-
+    print('Welcome to Time Tracker!')
+    
     # Get the path of the JSON file
     file_path = get_file_path()
 
