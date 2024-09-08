@@ -48,35 +48,38 @@ def check_token_expiration(jwt: str, jwt_refresh: str) -> tuple[bool, str]:
             logger.error(f"{r.status_code} JWT Refresh Token invalid")
             return (False, None)
 
+def register():
+    pass
+
 def login():
     try:
         while True:
-                username = input("Enter your username: ")
-                password = input("Enter your password: ")
-                payload = {
-                    "username": username,
-                    "password": password
-                }
-                # Post the credentials to the token endpoint
-                r = requests.post(
-                    "http://127.0.0.1:8000/auth/api/token/", data=payload)
-                if r.status_code == 200:
-                    # If the credentials are valid, get the jwt and refresh token
-                    jwt = (r.json()).get('access')
-                    jwt_refresh = (r.json()).get('refresh')
-                    # Save the jwt and refresh token to keyring
-                    keyring.set_password('time_tracker', 'jwt', jwt)
-                    keyring.set_password(
-                        'time_tracker', 'jwt_refresh', jwt_refresh)
-                    logger.info('Added jwt and refresh token to keyring')
-                    # Break out of the loop
-                    break
-                elif r.status_code == 401:
-                    # If the credentials are invalid, print an error message
-                    print("Invalid username or password")
-                else:
-                    # If there is another error, print the status code
-                    print("Something went wrong, status code:", r.status_code)
+            username = input("Enter your username: ")
+            password = input("Enter your password: ")
+            payload = {
+                "username": username,
+                "password": password
+            }
+            # Post the credentials to the token endpoint
+            r = requests.post(
+                "http://127.0.0.1:8000/auth/api/token/", data=payload)
+            if r.status_code == 200:
+                # If the credentials are valid, get the jwt and refresh token
+                jwt = (r.json()).get('access')
+                jwt_refresh = (r.json()).get('refresh')
+                # Save the jwt and refresh token to keyring
+                keyring.set_password('time_tracker', 'jwt', jwt)
+                keyring.set_password(
+                    'time_tracker', 'jwt_refresh', jwt_refresh)
+                logger.info('Added jwt and refresh token to keyring')
+                # Break out of the loop
+                break
+            elif r.status_code == 401:
+                # If the credentials are invalid, print an error message
+                print("Invalid username or password")
+            else:
+                # If there is another error, print the status code
+                print("Something went wrong, status code:", r.status_code)
     except KeyboardInterrupt:
         # If the user presses Ctrl+C, exit the program
         print("Exiting program")
@@ -167,7 +170,13 @@ def upload_to_db():
 def main():
     try:
         logger.info('Tracker started')
-        upload_to_db()
+        jwt_refresh = keyring.get_password('time_tracker', 'jwt_refresh')
+        if jwt_refresh is None:
+            choice = input('If you want to login, type 1. If you want to register, press 2.')
+            if choice == '1':
+                login()
+            elif choice == '2':
+                register()
         scheduler = BackgroundScheduler()  # Create a background scheduler
 
         # Add a job to the scheduler to run the close handler every hour
