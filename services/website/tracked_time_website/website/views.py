@@ -30,7 +30,8 @@ class TrackedTimeListView(ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         return user.trackedtimes.all()
-
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
     # def get(self, request):
     #     tracked_time = TrackedTime.objects.filter(user=request.user)
     #     serializer = TrackedTimeSerializer(tracked_time, many=True)

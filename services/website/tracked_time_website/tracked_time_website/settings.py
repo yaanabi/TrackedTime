@@ -41,22 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'website.apps.WebsiteConfig',
     'authapp.apps.AuthappConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
-    'dj_rest_auth',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'dj_rest_auth.registration',
-    
-    'rest_framework.authtoken'
 ]
-
-SITE_ID = 1
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

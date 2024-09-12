@@ -7,8 +7,5 @@ urlpatterns = [
     path('', IndexView.as_view(), name="index"),
     path('api/trackedtime/', TrackedTimeListView.as_view()),
     path('api/trackedtime/<int:pk>/', TrackedTimeDetailView.as_view()),
-    path('api-auth/', include('rest_framework.urls')),
-
-
 ]
 format_suffix_patterns(urlpatterns)
