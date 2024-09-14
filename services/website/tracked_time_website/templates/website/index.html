@@ -1,11 +1,20 @@
+{% extends 'base_generic.html' %}
 
-{% if user.is_authenticated %}
-<h1>HELLO {{user.username}}</h1>
-<form method="POST" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
-{% else %}
-<h1>HELLO WORLD</h1>
-<a href="{% url 'login' %}">Login</a>
-{% endif %}
+
+{% block content %}
+    <div class="d-flex justify-content-center">
+        <div class="p-3 text-center">
+        {% if user.is_authenticated %}
+            <h1>HELLO {{user.username}}</h1>
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+                <h1>HELLO WORLD</h1>
+                <a href="{% url 'login' %}">Login</a><br>
+                <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+        </div>
+    </div>
+{% endblock content %}
