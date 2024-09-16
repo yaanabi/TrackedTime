@@ -136,7 +136,7 @@ def register():
         "password2": password2,
         "email": email
     }
-    url = 'http://127.0.0.1:8000/auth/register/'
+    url = 'http://127.0.0.1:8000/auth/api/register/'
 
     r = requests.post(url, data=payload)
 

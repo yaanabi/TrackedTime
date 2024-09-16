@@ -1,7 +1,10 @@
+from typing import Any
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 from rest_framework import status 
 from rest_framework.response import Response
@@ -11,6 +14,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
+from collections import defaultdict
+from datetime import timedelta
 
 from .serializers import TrackedTimeSerializer
 from .models import TrackedTime
@@ -19,6 +24,28 @@ from .permissions import IsOwnerOrRestricted
 
 class IndexView(TemplateView):
     template_name = "website/index.html"
+
+
+class AppsView(LoginRequiredMixin, ListView):
+    model = TrackedTime 
+    login_url = reverse_lazy('login')
+    template_name = "website/time_data.html"
+    context_object_name = "apps_data"
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        all_apps = context["apps_data"]
+        apps_data = defaultdict(lambda: timedelta())
+        for elem in all_apps:
+            if elem.user.id == self.request.user.id:
+                for app, time in elem.apps.items():
+                    hours, minutes, seconds = map(int, time.split(':'))
+                    apps_data[app] += timedelta(hours=hours, minutes=minutes, seconds=seconds)
+        for key in apps_data:
+            apps_data[key] = str(apps_data[key])
+        apps_data = dict(apps_data)
+        context["apps_data"] = apps_data
+        return context
+
 
 
 class TrackedTimeListView(ListCreateAPIView):

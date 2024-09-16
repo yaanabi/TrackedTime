@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">App name</th>
+                <th scope="col">Time spent</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for app, time in apps_data.items %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ app }}</td>
+                    <td>{{ time }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
